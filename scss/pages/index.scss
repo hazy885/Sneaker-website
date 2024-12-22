@@ -1,0 +1,191 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  height: 100%;
+}
+
+.home-page-container {
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(120deg, #f8f9fa, #dee2e6);
+  color: #333;
+  position: relative;
+
+  & .hero {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+
+    &__content {
+      text-align: center;
+      padding: 2rem;
+      border-radius: 15px;
+      color: #ff0055;
+
+      h1 {
+        font-size: 4.5rem;
+        margin-bottom: 1rem;
+      }
+
+      p {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+      }
+    }
+
+    &__button {
+      display: inline-block;
+      padding: 0.8rem 2rem;
+      font-size: 1rem;
+      background-color: #333;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #555;
+      }
+    }
+  }
+
+ // Variables
+$card-width: 200px;
+$card-height: 300px;
+$rotation-duration: 0.8s;
+$card-border-radius: 10px;
+
+// Color palette
+$color-front: #3498db;
+$color-left: #2ecc71;
+$color-right: #e74c3c;
+$color-button: #34495e;
+$color-button-hover: #2c3e50;
+$color-text: #ffffff;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin card-face($bg-color) {
+  background-color: $bg-color;
+  color: $color-text;
+  @include flex-center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  font-size: 18px;
+  border-radius: $card-border-radius;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+// Card Container
+.card-container {
+  width: $card-width;
+  height: $card-height;
+  perspective: 1000px;
+  margin: 20px auto;
+}
+
+// Card
+.card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform $rotation-duration;
+  transform-style: preserve-3d;
+}
+
+// Card Faces
+.card-face {
+  &--front {
+    @include card-face($color-front);
+  }
+
+  &--left {
+    @include card-face($color-left);
+    transform: rotateY(-120deg) translateZ($card-width / 1.74);
+  }
+
+  &--right {
+    @include card-face($color-right);
+    transform: rotateY(120deg) translateZ($card-width / 1.74);
+  }
+}
+
+// Button Container
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+// Flip Buttons
+.flip-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: $color-button;
+  color: $color-text;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: $color-button-hover;
+  }
+
+  &--left {
+    &:before {
+      content: '↺ ';
+    }
+  }
+
+  &--right {
+    &:after {
+      content: ' ↻';
+    }
+  }
+}
+}
+
+@media (max-width: 768px) {
+  .hero {
+    &__content {
+      width: 90%;
+      padding: 1.5rem;
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .carousel {
+    width: 90%;
+    height: 400px;
+  }
+}

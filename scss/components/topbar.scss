@@ -1,0 +1,348 @@
+// Variables
+$border-color: #2b2222;
+$primary-color: #2b2222;
+$white: #fff;
+$border-radius: 10px;
+$transition-speed: 0.3s;
+$shadow-color: rgba(0, 0, 0, 0.2);
+$mobile-breakpoint: 768px;
+$primary-border-color: #1f1717;
+$focus-border-color: rgb(6, 7, 7);
+$label-color: #000000;
+$focus-label-color: rgb(0, 0, 0);
+$input-color: #000000;
+$font-size: 18px;
+$transition-timing: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+}
+
+@mixin button-reset {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+@mixin dropdown-base {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: $white;
+  border-radius: $border-radius;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  min-width: 200px;
+  margin-top: 0.5rem;
+}
+
+@mixin hover-scale {
+  transition: transform $transition-speed ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    height: 0;
+  }
+
+  to {
+    height: 5rem;
+  }
+}
+
+// Main styles
+.topbar-container {
+  @include flex-center;
+  padding: 1rem;
+  gap: 1rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  margin: 0;
+  height: 0;
+  background-color: $white;
+  box-sizing: border-box;
+  z-index: 100;
+  overflow: hidden;
+  transition: box-shadow $transition-speed ease;
+  box-shadow: 0 0 10px $shadow-color;
+  box-sizing: border-box;
+  animation: slideDown $transition-speed ease forwards;
+
+  & .topbar-img-container {
+    width: 70px;
+    height: 70px;
+    & .topbar-img {
+      border: none;
+      background-image: url('/images/logo2.jpg'); // Ensure the correct image path
+      background-size: cover; // Ensure the image fills the container
+      background-position: center; // Center the image
+      background-repeat: no-repeat; // Avoid tiling the image
+      width: 100%;
+      height: 100%;
+      background-color: #fff;
+      z-index: 1; // Ensure it sits above the container background
+    }
+
+    // & .color-burn {
+    //   background-blend-mode: hard-light
+    // }
+  }
+  
+
+  & .search-bar {
+    @include flex-center;
+    gap: 0.5rem;
+    flex: 1;
+    max-width: 600px;
+
+    input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: 2px solid $border-color;
+      border-radius: $border-radius;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color $transition-speed ease;
+
+      &:focus {
+        border-color: $border-color;
+        box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+      }
+
+      &::placeholder {
+        color: $border-color;
+      }
+    }
+
+    button {
+      padding: 0.75rem 1.5rem;
+      background-color: $primary-color;
+      color: $white;
+      border: none;
+      border-radius: $border-radius;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all $transition-speed ease;
+
+      &:hover {
+        background-color: lighten($primary-color, 10%);
+      }
+
+      &:active {
+        transform: translateY(1px);
+      }
+    }
+  }
+
+
+  .form-control {
+    position: relative;
+    margin: 20px 0 40px;
+    width: 250px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    input {
+      background-color: transparent;
+      border: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      border-bottom: 2px $primary-border-color solid;
+      display: block;
+      width: 100%;
+      padding: 15px 0;
+      font-size: $font-size;
+      color: $input-color;
+
+      &:focus,
+      &:valid {
+        outline: 0;
+        border-bottom-color: $focus-border-color;
+
+        &+label {
+          span {
+            color: $focus-label-color;
+            transform: translateX(-70px);
+          }
+        }
+      }
+    }
+
+    label {
+      position: absolute;
+      top: 15px;
+      left: 0;
+      pointer-events: none;
+
+      span {
+        display: inline-block;
+        font-size: $font-size;
+        min-width: 5px;
+        color: $label-color;
+        transition: $transition-timing;
+      }
+    }
+  }
+
+  /*------ Settings ------*/
+  .notifications-container {
+    margin: 0 1.5rem;
+    --color: #000000;
+    --size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    font-size: var(--size);
+    user-select: none;
+    fill: var(--color);
+
+    .bell-regular {
+      position: absolute;
+      animation: keyframes-fill 0.5s;
+    }
+
+    .bell-solid {
+      position: absolute;
+      display: none;
+      animation: keyframes-fill 0.5s;
+    }
+
+    input:checked~.bell-regular {
+      display: none;
+    }
+
+    input:checked~.bell-solid {
+      display: block;
+    }
+
+    input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+
+    @keyframes keyframes-fill {
+      0% {
+        opacity: 0;
+      }
+
+      25% {
+        transform: rotate(25deg);
+      }
+
+      50% {
+        transform: rotate(-20deg) scale(1.2);
+      }
+
+      75% {
+        transform: rotate(15deg);
+      }
+    }
+  }
+
+
+
+  .user-menu {
+    position: relative;
+
+    button {
+      @include button-reset;
+
+      img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid $border-color;
+        @include hover-scale;
+      }
+    }
+
+    .user-dropdown {
+      @include dropdown-base;
+      padding: 0.5rem 0;
+    }
+  }
+
+  $transition-timing: 600ms cubic-bezier(0.4, 0, 0.2, 1);
+  $stroke-color: rgb(0, 0, 0);
+  $stroke-width: 3;
+  $hamburger-size: 3em;
+
+  .hamburger {
+    cursor: pointer;
+
+    input {
+      display: none;
+
+      &:checked {
+        &+svg {
+          transform: rotate(-45deg);
+
+          .line-top-bottom {
+            stroke-dasharray: 20 300;
+            stroke-dashoffset: -32.42;
+          }
+        }
+      }
+    }
+
+    svg {
+      height: $hamburger-size;
+      transition: transform $transition-timing;
+    }
+
+    .line {
+      fill: none;
+      stroke: $stroke-color;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: $stroke-width;
+      transition:
+        stroke-dasharray $transition-timing,
+        stroke-dashoffset $transition-timing;
+
+      &-top-bottom {
+        stroke-dasharray: 12 63;
+      }
+    }
+  }
+}
+
+// Media queries
+@media (max-width: $mobile-breakpoint) {
+  .topbar-container {
+    padding: 0.5rem;
+
+    .topbar-img-container {
+      .topbar-img {
+        width: 20%;
+      }
+    }
+
+    .search-bar {
+      max-width: 100%;
+
+      input {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+      }
+
+      button {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+      }
+    }
+  }
+}
